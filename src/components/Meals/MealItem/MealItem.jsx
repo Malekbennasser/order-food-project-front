@@ -5,10 +5,9 @@ import CartContext from "../../../store/cart-context";
 
 export const MealItem = (props) => {
   const cartCtx = useContext(CartContext);
-  console.log("carctx", cartCtx);
+
   const price = `${props.price.toFixed()} €`;
-  console.log(price);
-  console.log(price);
+
   const addItemToCart = (amount) => {
     cartCtx.addItem({
       id: props.id,

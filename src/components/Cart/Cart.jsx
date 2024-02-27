@@ -6,15 +6,15 @@ import CartItem from "./CartItem";
 
 export const Cart = (props) => {
   const cartCtx = useContext(CartContext);
-  console.log("cart", cartCtx);
-  const totalAmount = `${cartCtx.totalAmount.toFixed(2)} `;
-  console.log("toto", totalAmount);
+
+  const totalAmount = `${cartCtx.totalAmount.toFixed(2)}€ `;
+
   const hasItems = cartCtx.items.length > 0;
   const cartItemRemoveHandler = (id) => {
-    cartCtx.remiveItem(id);
+    cartCtx.removeItem(id);
   };
   const cartItemAddHandler = (item) => {
-    cartCtx.addItem(item);
+    cartCtx.addItem({ ...item, amount: 1 });
   };
   const cartItems = (
     <ul className={classes["cart-items"]}>
