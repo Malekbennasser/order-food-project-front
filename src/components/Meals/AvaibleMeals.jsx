@@ -5,11 +5,17 @@ import { MealItem } from "./MealItem/MealItem";
 
 export const AvaibleMeals = () => {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [httpError, setHttpError] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
         "https://order-food-b30ba-default-rtdb.europe-west1.firebasedatabase.app/meals.json"
       );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
       const data = await response.json();
 
       const loadedMeals = [];
@@ -23,10 +29,29 @@ export const AvaibleMeals = () => {
         });
       }
       setData(loadedMeals);
+      setIsLoading(false);
     };
-    fetchData();
-  }, []);
 
+    fetchData().catch((error) => {
+      setIsLoading(false);
+      setHttpError(error.message);
+    });
+  }, []);
+  if (isLoading) {
+    return (
+      <section className={classes.MealsLoading}>
+        <p> Loading...</p>
+      </section>
+    );
+  }
+
+  if (httpError) {
+    return (
+      <section className={classes.MealsError}>
+        <p>{httpError}</p>
+      </section>
+    );
+  }
   const mealsLIst = data.map((meal) => (
     <MealItem
       id={meal.id}
